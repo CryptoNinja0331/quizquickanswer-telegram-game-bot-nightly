@@ -1,0 +1,112 @@
+{
+	"name": "@ptkdev/quizquickanswer-telegram-game-bot",
+	"displayName": "Quiz Quick Answer Bot",
+	"description": "Funny quiz game for telegram groups",
+	"version": "0.7.9-nightly.99",
+	"main": "dist/core/bot.js",
+	"publishConfig": {
+		"access": "public"
+	},
+	"author": "Patryk Rzucidło [@ptkdev] <support@ptkdev.io> (https://ptk.dev)",
+	"license": "MIT",
+	"license-docs": "CC BY 4.0",
+	"license-translations": "CC BY 4.0",
+	"license-images": "CC BY-NC 4.0",
+	"homepage": "https://github.com/ptkdev/quizquickanswer-telegram-game-bot",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ptkdev/quizquickanswer-telegram-game-bot.git"
+	},
+	"bugs": {
+		"url": "https://github.com/ptkdev/quizquickanswer-telegram-game-bot/issues"
+	},
+	"engines": {
+		"node": ">=14.0.0"
+	},
+	"scripts": {
+		"setup": "ts-node --skip-project scripts/setup.ts && ts-node --skip-project scripts/changelog.ts && npm run pre-commit",
+		"start": "npm run git-hash && node dist/core/bot.js",
+		"start-pm2": "pm2 start .pm2-process.json",
+		"stop-pm2": "pm2 stop .pm2-process.json",
+		"dev": "npm run git-hash && ts-node scripts/configs.ts && ts-node scripts/rmdist.ts && ts-node scripts/debug.ts --enable && nodemon --exec ts-node app/core/bot.ts",
+		"build": "ts-node scripts/configs.ts && ts-node scripts/rmdist.ts && ts-node scripts/debug.ts --disable && tsc",
+		"release": "npm run git-hash && npm run build && tsc --declaration --emitDeclarationOnly",
+		"test": "jest app",
+		"migrate": "ts-node scripts/migration.ts",
+		"mongodump": "mongodump -d quizquickanswerdb -o .",
+		"mongorestore": "mongorestore -d quizquickanswerdb quizquickanswerdb",
+		"docs": "git submodule update --recursive && markserv ./README.md",
+		"lint": "npm run lint-prettify && eslint . --cache --ext .ts,.js",
+		"lint-fix": "npm run lint-prettify && eslint . --cache --ext .ts,.js --fix",
+		"lint-prettify": "prettier --write --ignore-unknown \"**/*.{md,json,ts,js}\"",
+		"git-set-upstream": "git remote add upstream git@github.com:ptkdev/quizquickanswer-telegram-game-bot.git && git fetch upstream",
+		"git-pull-upstream": "git pull upstream main && git pull upstream beta && git pull upstream nightly",
+		"git-pull": "git pull --recursive",
+		"git-hash": "ts-node scripts/githash.ts",
+		"git-ignore-reset": "git rm -r --cached . && git add . && git commit -m \"[Fix] Removing all files in .gitignore\"",
+		"github-workflow-next-version": "ts-node scripts/version.ts",
+		"github-workflow-changelog": "ts-node scripts/changelog_release.ts",
+		"npm-publish-main": "git checkout main && npm publish",
+		"npm-publish-beta": "git checkout beta && npm publish --tag beta",
+		"npm-publish-nightly": "git checkout nightly && npm publish --tag nightly",
+		"contributors-generate": "all-contributors generate",
+		"all-shields-generate": "all-shields-generate",
+		"pre-commit": "npm run contributors-generate && npm run all-shields-generate && npm run lint-fix && npm run test",
+		"pkg-clean": "rm -rf node_modules package-lock.json && npm install && npm install mongoose@5 && npm install eslint@7 @types/yargs@16 --save-dev && husky install",
+		"pkg-update": "npm update",
+		"pkg-upgrade": "npx --yes npm-check-updates -u && npm install && npm install mongoose@5 && npm install eslint@7 @types/yargs@16 --save-dev && husky install",
+		"prepare": "ts-patch install -s && husky install"
+	},
+	"dependencies": {
+		"@ptkdev/logger": "^1.8.0",
+		"cron": "^2.3.1",
+		"dotenv": "^16.3.1",
+		"grammy": "^1.17.2",
+		"mongoose": "^5.13.19",
+		"pm2": "^5.3.0"
+	},
+	"devDependencies": {
+		"@ptkdev/all-shields-cli": "^2.0.2",
+		"@types/jest": "^29.5.2",
+		"@types/node": "^20.4.1",
+		"@types/shelljs": "^0.8.12",
+		"@types/yargs": "^16.0.5",
+		"@typescript-eslint/eslint-plugin": "^5.61.0",
+		"@typescript-eslint/parser": "^5.61.0",
+		"all-contributors-cli": "^6.26.1",
+		"eslint": "^7.32.0",
+		"eslint-plugin-jest": "^27.2.2",
+		"eslint-plugin-jsdoc": "^46.4.3",
+		"husky": "^8.0.3",
+		"jest": "^29.6.1",
+		"json": "^11.0.0",
+		"markserv": "^1.17.4",
+		"nodemon": "^3.0.1",
+		"prettier": "^3.0.0",
+		"shelljs": "^0.8.5",
+		"ts-jest": "^29.1.1",
+		"ts-node": "^10.9.1",
+		"ts-patch": "^3.0.1",
+		"typescript": "^5.1.6",
+		"typescript-transform-paths": "^3.4.6",
+		"yargs": "^17.7.2"
+	},
+	"keywords": [
+		"ptkdev",
+		"telegram",
+		"telegram groups",
+		"friends",
+		"telegram bot",
+		"bot",
+		"quiz game",
+		"quiz telegram",
+		"game telegram",
+		"game bot telegram"
+	],
+	"contributors": [
+		{
+			"name": "Ali Shadman",
+			"url": "https://github.com/AliShadman95"
+		}
+	]
+}
